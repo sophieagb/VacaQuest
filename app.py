@@ -1,9 +1,7 @@
 import os
 import openai
 
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, request, render_template
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -27,8 +25,16 @@ def recommend():
             {"role": "user", "content": user_input}  
         ]
     )
-    recommendation = response.choices[0].text.strip()
+    recommendation = response.choices[0].message['content'].strip()
     return render_template('recommendations.html', recommendation=recommendation)
 
+######## TESTING
+@app.route('/result', methods=['POST'])
+def result():
+    user_input = request.form['user_input']
+    # Simple function to reverse the input string
+    reversed_input = user_input[::-1]
+    return render_template('result.html', reversed_input=reversed_input)
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
