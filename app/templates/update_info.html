@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Personal Info</title>
+</head>
+<body>
+    <h1>Update Personal Info</h1>
+    <form action="{{ url_for('main.update_info') }}" method="post">
+        <label for="starting_location">Starting Location:</label>
+        <input type="text" name="starting_location" id="starting_location" required><br>
+        <label for="disabilities">Disabilities:</label>
+        <textarea name="disabilities" id="disabilities" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Update Info">
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>

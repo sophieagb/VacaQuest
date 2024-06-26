@@ -152,6 +152,42 @@ def save_plan():
     return redirect(url_for("main.index"))
 
 
+@main_bp.route("/update_info", methods=["GET", "POST"])
+def update_info():
+    if "logged_in" not in session:
+        return redirect(url_for("main.login"))
+    
+    if request.method == "POST":
+        user_id = session.get("user_id")
+        starting_location = request.form["starting_location"]
+        disabilities = request.form["disabilities"]
+
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
+            data = cur.fetchone()
+            if data:
+                cur.execute(
+                    "UPDATE user_info SET starting_location = %s, disabilities = %s WHERE user_id = %s",
+                    (starting_location, disabilities, user_id)
+                )
+            else:
+                cur.execute(
+                    "INSERT INTO user_info (user_id, starting_location, disabilities) VALUES (%s, %s, %s)",
+                    (user_id, starting_location, disabilities)
+                )
+            conn.commit()
+            cur.close()
+            conn.close()
+            flash("Personal info updated successfully!", "success")
+            return redirect(url_for("main.index"))
+        except Exception as e:
+            flash(f"Error: {e}", "danger")
+            return render_template("update_info.html")
+    return render_template("update_info.html")
+
+
 @main_bp.route("/testing")
 def testing():
     return "This is a test route!"

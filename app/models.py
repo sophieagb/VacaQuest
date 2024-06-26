@@ -23,7 +23,7 @@ def create_tables():
     CREATE TABLE IF NOT EXISTS user_info (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
-        location VARCHAR(100),
+        starting_location VARCHAR(100),
         disabilities TEXT,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )
