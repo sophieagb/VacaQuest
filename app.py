@@ -113,10 +113,11 @@ def logout():
 @app.route('/recommend', methods=['POST'])
 def recommend():
     user_input = request.form['user_input']
+    gpt_prompt = f"Please help me choose a travel destination based on the following information:{user_input}. Please Organize it in the following format: \nLOCATION: \nACTIVITIES: \nESTIMATED PRICE: \n For ACTIVITIES, return 5 activities I can do. Do NOT include prices.\nFor ESTIMATED PRICE only return a range in USD and nothing else. For example $1000 - $4000"
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[
-            {"role": "user", "content": user_input}  
+            {"role": "user", "content": gpt_prompt}  
         ]
     )
     recommendation = response.choices[0].message['content'].strip()
