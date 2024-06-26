@@ -2,3 +2,5 @@ Flask==2.0.3
 openai==0.27.0
 python-dotenv==0.19.2
 Werkzeug==2.0.3
+bcrypt==3.1.7
+mysql-connector-python==8.0.33
