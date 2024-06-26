@@ -254,6 +254,28 @@ def update_info():
     return render_template("update_info.html", starting_location=starting_location, disabilities=disabilities)
 
 
+@main_bp.route("/travel_plans")
+def travel_plans():
+    if "logged_in" not in session:
+        return redirect(url_for("main.login"))
+
+    user_id = session.get("user_id")
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM travel_plans WHERE user_id = %s", (user_id,))
+        plans = cur.fetchall()
+        print(plans)
+        cur.close()
+        conn.close()
+    except Exception as e:
+        flash(f"Error retrieving travel plans: {e}", "danger")
+        plans = []
+
+    return render_template("travel_plans.html", plans=plans)
+
+
 @main_bp.route("/testing")
 def testing():
     return "This is a test route!"
