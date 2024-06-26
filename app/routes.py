@@ -58,7 +58,8 @@ def login():
                 data["password"], password_candidate
             ):
                 session["logged_in"] = True
-                session["username"] = username
+                session["user_id"] = data["id"]
+                # print(f"User ID: {session['user_id']}")
                 flash("You are now logged in", "success")
                 return redirect(url_for("main.index"))
             else:
@@ -85,10 +86,73 @@ def recommend():
     user_input = request.form["user_input"]
     gpt_prompt = f"Please help me choose a travel destination based on the following information:{user_input}. Please Organize it in the following format: \nLOCATION: \nACTIVITIES: \nESTIMATED PRICE: \n For ACTIVITIES, return 5 activities I can do. Do NOT include prices.\nFor ESTIMATED PRICE only return a range in USD and nothing else. For example $1000 - $4000"
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", messages=[{"role": "user", "content": gpt_prompt}]
+        model="gpt-4o", messages=[{"role": "user", "content": gpt_prompt}]
     )
     recommendation = response.choices[0].message["content"].strip()
-    return render_template("recommendations.html", recommendation=recommendation)
+
+    location, activities, price = extract_recommendation_details(recommendation)
+
+    # Debugging: Print the extracted details
+    print(f"Location: {location}")
+    print(f"Activities: {activities}")
+    print(f"Price: {price}")
+
+    return render_template(
+        "recommendations.html",
+        recommendation=recommendation,
+        location=location,
+        activities=activities,
+        price=price,
+    )
+
+
+def extract_recommendation_details(recommendation):
+    lines = recommendation.split("\n")
+    # print(lines)
+    location = lines[0].replace("LOCATION:", "").strip()
+    # print(lines)
+    activities = (
+        "\n".join(line.strip() for line in lines[3:8])
+        .replace("ACTIVITIES:", "")
+        .strip()
+    )
+    price = lines[9].replace("ESTIMATED PRICE:", "").strip()
+    return location, activities, price
+
+
+@main_bp.route("/save_plan", methods=["POST"])
+def save_plan():
+    if "logged_in" not in session:
+        return redirect(url_for("main.login"))
+
+    user_id = session.get("user_id")
+    location = request.form["location"]
+    activities = request.form["activities"]
+    price = request.form["price"]
+
+    # Debugging: Print the data to be saved
+    print(f"User ID: {user_id}")
+    print(f"Location: {location}")
+    print(f"Activities: {activities}")
+    print(f"Price: {price}")
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute(
+            "INSERT INTO travel_plans (user_id, destination, plan_details) VALUES (%s, %s, %s)",
+            (user_id, location, f"Activities: {activities}\nEstimated Price: {price}"),
+        )
+        conn.commit()
+        cur.close()
+        conn.close()
+        flash("Travel plan saved successfully!", "success")
+    except Exception as e:
+        flash(f"Error: {e}", "danger")
+        print(f"Error: {e}")
+
+    return redirect(url_for("main.index"))
+
 
 @main_bp.route("/testing")
 def testing():

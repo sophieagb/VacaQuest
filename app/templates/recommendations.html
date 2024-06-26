@@ -8,6 +8,14 @@
 <body>
     <h1>Your Vacation Recommendation</h1>
     <p>{{ recommendation }}</p>
+
+    <form action="{{ url_for('main.save_plan') }}" method="post">
+        <input type="hidden" name="location" value="{{ location }}">
+        <input type="hidden" name="activities" value="{{ activities }}">
+        <input type="hidden" name="price" value="{{ price }}">
+        <button type="submit">Save Plan</button>
+    </form>
+    
     <a href="/">Back to Home</a>
 </body>
 </html>
