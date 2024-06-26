@@ -81,10 +81,71 @@ def logout():
     return redirect(url_for("main.login"))
 
 
+def extract_recommendation_details(recommendation):
+    lines = recommendation.split("\n")
+
+    location = ""
+    activities = ""
+    price = ""
+
+    for line in lines:
+        if line.startswith("LOCATION:"):
+            location = line.replace("LOCATION:", "").strip()
+        elif line.startswith("ACTIVITIES:"):
+            activities = line.replace("ACTIVITIES:", "").strip()
+        elif line.startswith("ESTIMATED PRICE:"):
+            price = line.replace("ESTIMATED PRICE:", "").strip()
+    
+    return location, activities, price
+
+
+    
 @main_bp.route("/recommend", methods=["POST"])
 def recommend():
     user_input = request.form["user_input"]
-    gpt_prompt = f"Please help me choose a travel destination based on the following information:{user_input}. Please Organize it in the following format: \nLOCATION: \nACTIVITIES: \nESTIMATED PRICE: \n For ACTIVITIES, return 5 activities I can do. Do NOT include prices.\nFor ESTIMATED PRICE only return a range in USD and nothing else. For example $1000 - $4000"
+    user_id = session.get("user_id")
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
+        user_info = cur.fetchone()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        flash(f"Error retrieving user info: {e}", "danger")
+        return redirect(url_for("main.index"))
+
+    if user_info:
+        starting_location = user_info.get("starting_location", "unknown location")
+        disabilities = user_info.get("disabilities", "none")
+        gpt_prompt = (
+            f"Please help me choose a travel destination based on the following information:\n"
+            f"Starting Location: {starting_location}\n"
+            f"Disabilities: {disabilities}\n"
+            f"Additional Info: {user_input}\n"
+            f"Please organize it in the following format:\n"
+            f"LOCATION:\n"
+            f"ACTIVITIES:\n"
+            f"ESTIMATED PRICE:\n"
+            f"For ACTIVITIES, return 5 activities I can do. Please make them detailed but do NOT include prices. Additionally, return it all on the same line but keep them numbered by 1. 2. 3. 4. 5.\n"
+            f"For ESTIMATED PRICE only return a range in USD and nothing else. For example $1000 - $4000\n"
+            f"Additionally, do not return any asterisks. I want straight text."
+            f"Return in the EXACT format"
+        )
+    else:
+        gpt_prompt = (
+            f"Please help me choose a travel destination based on the following information:\n"
+            f"{user_input}\n"
+            f"Please organize it in the following format:\n"
+            f"LOCATION:\n"
+            f"ACTIVITIES:\n"
+            f"ESTIMATED PRICE:\n"
+            f"For ACTIVITIES, return 5 activities I can do. Please make them detailed but do NOT include prices. Additionally, return it all on the same line but keep them numbered by 1., 2., 3., 4., 5.\n"
+            f"For ESTIMATED PRICE only return a range in USD and nothing else. For example $1000 - $4000\n"
+            f"Additionally, do not return any asterisks. I want straight text."
+        )
+        
     response = openai.ChatCompletion.create(
         model="gpt-4o", messages=[{"role": "user", "content": gpt_prompt}]
     )
@@ -92,9 +153,9 @@ def recommend():
 
     location, activities, price = extract_recommendation_details(recommendation)
 
-    # print(f"Location: {location}")
-    # print(f"Activities: {activities}")
-    # print(f"Price: {price}")
+    print(f"Location: {location}")
+    print(f"Activities: {activities}")
+    print(f"Estimated Price: {price}")
 
     return render_template(
         "recommendations.html",
@@ -103,20 +164,6 @@ def recommend():
         activities=activities,
         price=price,
     )
-
-
-def extract_recommendation_details(recommendation):
-    lines = recommendation.split("\n")
-    # print(lines)
-    location = lines[0].replace("LOCATION:", "").strip()
-    # print(lines)
-    activities = (
-        "\n".join(line.strip() for line in lines[3:8])
-        .replace("ACTIVITIES:", "")
-        .strip()
-    )
-    price = lines[9].replace("ESTIMATED PRICE:", "").strip()
-    return location, activities, price
 
 
 @main_bp.route("/save_plan", methods=["POST"])
@@ -138,8 +185,8 @@ def save_plan():
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO travel_plans (user_id, destination, plan_details) VALUES (%s, %s, %s)",
-            (user_id, location, f"Activities: {activities}\nEstimated Price: {price}"),
+            "INSERT INTO travel_plans (user_id, destination, plan_details, estimated_price) VALUES (%s, %s, %s, %s)",
+            (user_id, location, f"Activities: {activities}", price),
         )
         conn.commit()
         cur.close()
@@ -152,11 +199,12 @@ def save_plan():
     return redirect(url_for("main.index"))
 
 
+
 @main_bp.route("/update_info", methods=["GET", "POST"])
 def update_info():
     if "logged_in" not in session:
         return redirect(url_for("main.login"))
-    
+
     if request.method == "POST":
         user_id = session.get("user_id")
         starting_location = request.form["starting_location"]
@@ -170,12 +218,12 @@ def update_info():
             if data:
                 cur.execute(
                     "UPDATE user_info SET starting_location = %s, disabilities = %s WHERE user_id = %s",
-                    (starting_location, disabilities, user_id)
+                    (starting_location, disabilities, user_id),
                 )
             else:
                 cur.execute(
                     "INSERT INTO user_info (user_id, starting_location, disabilities) VALUES (%s, %s, %s)",
-                    (user_id, starting_location, disabilities)
+                    (user_id, starting_location, disabilities),
                 )
             conn.commit()
             cur.close()

@@ -38,6 +38,7 @@ def create_tables():
         user_id INT NOT NULL,
         destination VARCHAR(100),
         plan_details TEXT,
+        estimated_price VARCHAR(50),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
     )
