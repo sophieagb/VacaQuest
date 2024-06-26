@@ -92,10 +92,9 @@ def recommend():
 
     location, activities, price = extract_recommendation_details(recommendation)
 
-    # Debugging: Print the extracted details
-    print(f"Location: {location}")
-    print(f"Activities: {activities}")
-    print(f"Price: {price}")
+    # print(f"Location: {location}")
+    # print(f"Activities: {activities}")
+    # print(f"Price: {price}")
 
     return render_template(
         "recommendations.html",
@@ -130,11 +129,10 @@ def save_plan():
     activities = request.form["activities"]
     price = request.form["price"]
 
-    # Debugging: Print the data to be saved
-    print(f"User ID: {user_id}")
-    print(f"Location: {location}")
-    print(f"Activities: {activities}")
-    print(f"Price: {price}")
+    # print(f"User ID: {user_id}")
+    # print(f"Location: {location}")
+    # print(f"Activities: {activities}")
+    # print(f"Price: {price}")
 
     try:
         conn = get_db_connection()
