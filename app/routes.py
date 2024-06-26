@@ -205,6 +205,24 @@ def update_info():
     if "logged_in" not in session:
         return redirect(url_for("main.login"))
 
+    user_id = session.get("user_id")
+    starting_location = ""
+    disabilities = ""
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
+        data = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        if data:
+            starting_location = data.get("starting_location", "")
+            disabilities = data.get("disabilities", "")
+    except Exception as e:
+        flash(f"Error retrieving user info: {e}", "danger")
+        
     if request.method == "POST":
         user_id = session.get("user_id")
         starting_location = request.form["starting_location"]
@@ -233,7 +251,7 @@ def update_info():
         except Exception as e:
             flash(f"Error: {e}", "danger")
             return render_template("update_info.html")
-    return render_template("update_info.html")
+    return render_template("update_info.html", starting_location=starting_location, disabilities=disabilities)
 
 
 @main_bp.route("/testing")
