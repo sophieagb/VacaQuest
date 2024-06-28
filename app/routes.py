@@ -48,6 +48,8 @@ def login():
         username = request.form["username"]
         password_candidate = request.form["password"]
 
+        conn = None
+        cur = None
         try:
             conn = get_db_connection()
             cur = conn.cursor(dictionary=True)
@@ -59,7 +61,6 @@ def login():
             ):
                 session["logged_in"] = True
                 session["user_id"] = data["id"]
-                print(f"User ID: {session['user_id']}")  # Debugging statement
                 flash("You are now logged in", "success")
                 return redirect(url_for("main.index"))
             else:
@@ -69,8 +70,10 @@ def login():
             flash(f"Error: {e}", "danger")
             return render_template("login.html")
         finally:
-            cur.close()
-            conn.close()
+            if cur:
+                cur.close()
+            if conn:
+                conn.close()
     return render_template("login.html")
 
 
@@ -98,7 +101,6 @@ def extract_recommendation_details(recommendation):
             price = line.replace("ESTIMATED PRICE:", "").strip()
     
     return location, activities, price
-
     
 @main_bp.route("/recommend", methods=["POST"])
 def recommend():
@@ -246,7 +248,6 @@ def delete_plan():
         print(f"Error: {e}")
 
     return redirect(url_for("main.travel_plan"))
-
 
 @main_bp.route("/travel_plan")
 def travel_plan():
