@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VacaQuest - Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='recommendations.css') }}">
 </head>
 <body>
-    <h1>Your Vacation Recommendation</h1>
-    <p>{{ recommendation }}</p>
+    <div class="container">
+        <div class="box">
+            <h1>Your Vacation Recommendation</h1>
+            <div class="recommendation-box">
+                <p>{{ recommendation }}</p>
+            </div>
 
-    <form action="{{ url_for('main.save_plan') }}" method="post">
-        <input type="hidden" name="location" value="{{ location }}">
-        <input type="hidden" name="activities" value="{{ activities }}">
-        <input type="hidden" name="price" value="{{ price }}">
-        <button type="submit">Save Plan</button>
-    </form>
-    
-    <a href="/">Back to Home</a>
+            <form action="{{ url_for('main.save_plan') }}" method="POST" class="save-form">
+                <input type="hidden" name="location" value="{{ location }}">
+                <input type="hidden" name="activities" value="{{ activities }}">
+                <input type="hidden" name="price" value="{{ price }}">
+                <button type="submit" class="save-button">Save Plan</button>
+            </form>
+            
+            <a href="/" class="back-link">Back to Home</a>
+        </div>
+    </div>
 </body>
 </html>

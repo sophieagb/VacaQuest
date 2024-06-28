@@ -1,0 +1,279 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(to right, #e0eafc, #cfdef3); /* Gradient background */
+}
+
+.login-container, .register-container {
+    display: flex;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
+    justify-content: center; /* Center the content */
+    padding: 40px; /* Add padding to the container */
+}
+
+.login-form, .register-form {
+    max-width: 600px;ç
+    width: 100%;
+}
+
+.login-form h1, .register-form h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+.login-form p, .register-form p {
+    margin: 10px 0;
+    color: #666;
+    line-height: 1.4; /* Adjust line height for better readability */
+}
+
+.login-form a, .register-form a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.login-form a:hover, .register-form a:hover {
+    text-decoration: underline;
+}
+
+.input-group {
+    margin: 20px 0;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.options .remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.options .remember-me input {
+    margin-right: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #357ab8;
+}
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.social-login a {
+    margin: 0 6px; /* Decrease the margin here to bring the icons closer together */
+}
+
+.social-login a img {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    padding: 0; /* Remove padding */
+}
+
+.login-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: #f9fafc;
+    flex: 0.8; /* Decrease the flex value here */
+}
+
+/* Additional styles for the index page */
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #6a5acd;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar .logo {
+    margin-bottom: 20px;
+}
+
+.sidebar .logo h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.sidebar .nav {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar .nav li {
+    margin: 15px 0;
+}
+
+.sidebar .nav li a {
+    color: white;
+    text-decoration: none;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background-color: #f4f7fc;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+header p {
+    margin: 0;
+    color: #555;
+}
+
+.search-bar {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 80%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #6a5acd;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.easy-visa, .calendar, .most-popular {
+    width: 30%;
+}
+
+.easy-visa h3, .calendar h3, .most-popular h3 {
+    margin-top: 0;
+}
+
+.destinations, .popular-destinations {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.destination-card {
+    width: 45%;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.destination-card img {
+    width: 100%;
+    height: auto;
+}
+
+.destination-card .info {
+    padding: 10px;
+}
+
+.destination-card .info h4 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.destination-card .info p {
+    margin: 0;
+    color: #555;
+}
+
+.calendar-widget {
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.bookings {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.bookings li {
+    margin-bottom: 10px;
+}
+
+.bookings li a {
+    text-decoration: none;
+    color: #6a5acd;
+}

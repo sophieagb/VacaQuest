@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.recommendation-box {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.recommendation-box p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.save-form {
+    margin-bottom: 20px;
+}
+
+.save-button {
+    background: #4e73df;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-button:hover {
+    background: #2e59d9;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 16px;
+    color: #4e73df;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
