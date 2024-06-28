@@ -39,7 +39,6 @@ def register():
             return render_template("register.html")
     return render_template("register.html")
 
-
 @main_bp.route("/login", methods=["GET", "POST"])
 def login():
     if "logged_in" in session:
@@ -53,13 +52,11 @@ def login():
             cur = conn.cursor(dictionary=True)
             cur.execute("SELECT * FROM users WHERE username = %s", (username,))
             data = cur.fetchone()
+            print(f"User data: {data}")  # Debugging statement
 
-            if data and bcrypt.check_password_hash(
-                data["password"], password_candidate
-            ):
+            if data and bcrypt.check_password_hash(data["password"], password_candidate):
                 session["logged_in"] = True
-                session["user_id"] = data["id"]
-                # print(f"User ID: {session['user_id']}")
+                session["username"] = username
                 flash("You are now logged in", "success")
                 return redirect(url_for("main.index"))
             else:
@@ -69,8 +66,11 @@ def login():
             flash(f"Error: {e}", "danger")
             return render_template("login.html")
         finally:
-            cur.close()
-            conn.close()
+            if cur:
+                cur.fetchall()  # Ensure all results are read
+                cur.close()
+            if conn:
+                conn.close()
     return render_template("login.html")
 
 
