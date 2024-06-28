@@ -39,6 +39,7 @@ def register():
             return render_template("register.html")
     return render_template("register.html")
 
+
 @main_bp.route("/login", methods=["GET", "POST"])
 def login():
     if "logged_in" in session:
@@ -52,11 +53,13 @@ def login():
             cur = conn.cursor(dictionary=True)
             cur.execute("SELECT * FROM users WHERE username = %s", (username,))
             data = cur.fetchone()
-            print(f"User data: {data}")  # Debugging statement
 
-            if data and bcrypt.check_password_hash(data["password"], password_candidate):
+            if data and bcrypt.check_password_hash(
+                data["password"], password_candidate
+            ):
                 session["logged_in"] = True
-                session["username"] = username
+                session["user_id"] = data["id"]
+                print(f"User ID: {session['user_id']}")  # Debugging statement
                 flash("You are now logged in", "success")
                 return redirect(url_for("main.index"))
             else:
@@ -66,12 +69,10 @@ def login():
             flash(f"Error: {e}", "danger")
             return render_template("login.html")
         finally:
-            if cur:
-                cur.fetchall()  # Ensure all results are read
-                cur.close()
-            if conn:
-                conn.close()
+            cur.close()
+            conn.close()
     return render_template("login.html")
+
 
 
 @main_bp.route("/logout")
@@ -97,7 +98,6 @@ def extract_recommendation_details(recommendation):
             price = line.replace("ESTIMATED PRICE:", "").strip()
     
     return location, activities, price
-
 
     
 @main_bp.route("/recommend", methods=["POST"])
@@ -166,7 +166,6 @@ def recommend():
         price=price,
     )
 
-
 @main_bp.route("/save_plan", methods=["POST"])
 def save_plan():
     if "logged_in" not in session:
@@ -177,10 +176,10 @@ def save_plan():
     activities = request.form["activities"]
     price = request.form["price"]
 
-    # print(f"User ID: {user_id}")
-    # print(f"Location: {location}")
-    # print(f"Activities: {activities}")
-    # print(f"Price: {price}")
+    print(f"User ID: {user_id}")  # Debugging statement
+    print(f"Location: {location}")
+    print(f"Activities: {activities}")
+    print(f"Price: {price}")
 
     try:
         conn = get_db_connection()
@@ -201,62 +200,35 @@ def save_plan():
 
 
 
-@main_bp.route("/update_info", methods=["GET", "POST"])
-def update_info():
+
+@main_bp.route("/delete_plan", methods=["POST"])
+def delete_plan():
     if "logged_in" not in session:
         return redirect(url_for("main.login"))
 
     user_id = session.get("user_id")
-    starting_location = ""
-    disabilities = ""
+    destination = request.form["destination"]
 
     try:
         conn = get_db_connection()
-        cur = conn.cursor(dictionary=True)
-        cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
-        data = cur.fetchone()
+        cur = conn.cursor()
+        cur.execute(
+            "DELETE FROM travel_plans WHERE user_id = %s AND destination = %s", 
+            (user_id, destination)
+        )
+        conn.commit()
         cur.close()
         conn.close()
-
-        if data:
-            starting_location = data.get("starting_location", "")
-            disabilities = data.get("disabilities", "")
+        flash("Travel plan deleted successfully!", "success")
     except Exception as e:
-        flash(f"Error retrieving user info: {e}", "danger")
-        
-    if request.method == "POST":
-        user_id = session.get("user_id")
-        starting_location = request.form["starting_location"]
-        disabilities = request.form["disabilities"]
+        flash(f"Error: {e}", "danger")
+        print(f"Error: {e}")
 
-        try:
-            conn = get_db_connection()
-            cur = conn.cursor()
-            cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
-            data = cur.fetchone()
-            if data:
-                cur.execute(
-                    "UPDATE user_info SET starting_location = %s, disabilities = %s WHERE user_id = %s",
-                    (starting_location, disabilities, user_id),
-                )
-            else:
-                cur.execute(
-                    "INSERT INTO user_info (user_id, starting_location, disabilities) VALUES (%s, %s, %s)",
-                    (user_id, starting_location, disabilities),
-                )
-            conn.commit()
-            cur.close()
-            conn.close()
-            flash("Personal info updated successfully!", "success")
-            return redirect(url_for("main.index"))
-        except Exception as e:
-            flash(f"Error: {e}", "danger")
-            return render_template("update_info.html")
-    return render_template("update_info.html", starting_location=starting_location, disabilities=disabilities)
+    return redirect(url_for("main.travel_plan"))
 
 
-@main_bp.route("/travel_plans")
-def travel_plans():
+@main_bp.route("/travel_plan")
+def travel_plan():
     if "logged_in" not in session:
         return redirect(url_for("main.login"))
 
@@ -274,8 +246,63 @@ def travel_plans():
         flash(f"Error retrieving travel plans: {e}", "danger")
         plans = []
 
-    return render_template("travel_plans.html", plans=plans)
+    return render_template("travel_plan.html", plans=plans)
 
+@main_bp.route("/update_info", methods=["GET", "POST"])
+def update_info():
+    if "logged_in" not in session:
+        return redirect(url_for("main.login"))
+
+    user_id = session.get("user_id")
+    starting_location = ""
+    accommodations = ""
+    phone_number = ""
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
+        data = cur.fetchone()
+        cur.close()
+        conn.close()
+
+        if data:
+            starting_location = data.get("starting_location", "")
+            accommodations = data.get("accommodations", "")
+            phone_number = data.get("phone_number", "")
+    except Exception as e:
+        flash(f"Error retrieving user info: {e}", "danger")
+        
+    if request.method == "POST":
+        user_id = session.get("user_id")
+        starting_location = request.form["starting_location"]
+        accommodations = request.form["accommodations"]
+        phone_number = request.form["phone_number"]
+
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM user_info WHERE user_id = %s", (user_id,))
+            data = cur.fetchone()
+            if data:
+                cur.execute(
+                    "UPDATE user_info SET starting_location = %s, accommodations = %s, phone_number = %s WHERE user_id = %s",
+                    (starting_location, accommodations, phone_number, user_id),
+                )
+            else:
+                cur.execute(
+                    "INSERT INTO user_info (user_id, starting_location, accommodations, phone_number) VALUES (%s, %s, %s, %s)",
+                    (user_id, starting_location, accommodations, phone_number),
+                )
+            conn.commit()
+            cur.close()
+            conn.close()
+            flash("Personal info updated successfully!", "success")
+            return redirect(url_for("main.index"))
+        except Exception as e:
+            flash(f"Error: {e}", "danger")
+            return render_template("update_info.html", starting_location=starting_location, accommodations=accommodations, phone_number=phone_number)
+    return render_template("update_info.html", starting_location=starting_location, accommodations=accommodations, phone_number=phone_number)
 
 @main_bp.route("/testing")
 def testing():
