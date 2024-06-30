@@ -15,7 +15,7 @@ body {
 
 .sidebar {
     width: 250px;
-    background-color: #add8e6;
+    background-color: #1985eb;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
@@ -31,7 +31,7 @@ body {
 }
 
 .sidebar nav ul li {
-    margin: 20px 0;
+    margin: 10px 0;
 }
 
 .sidebar nav ul li a {
@@ -82,16 +82,48 @@ input[type="submit"]:hover {
     background-color: #4169e1;
 }
 
-.links {
-    margin-top: 20px;
+.easy-visa {
+    margin-top: 40px;
 }
 
-.links a {
+.easy-visa h2 {
     color: #4682b4;
-    text-decoration: none;
-    margin-right: 10px;
 }
 
-.links a:hover {
-    text-decoration: underline;
+.destination {
+    position: relative;
+    width: 200px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.destination img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.destination-details {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px 5px 0 0;
+}
+
+.destination-details p {
+    margin: 0;
+}
+
+.easy-visa {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
 }
