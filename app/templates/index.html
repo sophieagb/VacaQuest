@@ -4,8 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VacaQuest - Vacation Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
+<<<<<<< HEAD
+    <div class="container">
+        <div class="sidebar">
+            <h2>VacaQuest</h2>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('main.index') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('main.travel_plan') }}">Favorite</a></li>
+                    <li><a href="{{ url_for('main.update_info') }}">Settings</a></li>
+                    <li><a href="{{ url_for('main.logout') }}">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content">
+            <h1>Welcome to VacaQuest - Your Personal Vacation Guide!</h1>
+            <form action="{{ url_for('main.recommend') }}" method="post">
+                <label for="user_input">Tell us about your dream vacation:</label><br>
+                <textarea id="user_input" name="user_input" rows="4" cols="50"></textarea><br>
+                <input type="submit" value="Get Recommendations">
+            </form>
+            <div class="easy-visa">
+                <h2>Easy Visa Destinations</h2>
+                <div class="destination">
+                    <img src="{{ url_for('static', filename='bali.jpg') }}" alt="Bali" class="destination-image">
+                    <p><strong>Bali</strong></p>
+                    <p>Starting at ₹19,600</p>
+                </div>
+                <div class="destination">
+                    <img src="{{ url_for('static', filename='dubai.jpg') }}" alt="Dubai" class="destination-image">
+                    <p><strong>Dubai</strong></p>
+                    <p>Starting at ₹21,700</p>
+                </div>
+                <div class="destination">
+                    <img src="{{ url_for('static', filename='maldives.jpg') }}" alt="Maldives" class="destination-image">
+                    <p><strong>Maldives</strong></p>
+                    <p>Starting at ₹11,300</p>
+                </div>
+            </div>
+        </div>
+    </div>
+=======
     <h1>Welcome to VacaQuest - Your Personal Vacation Guide!</h1>
     <form action="{{ url_for('main.recommend') }}" method="post">
         <label for="user_input">Tell us about your dream vacation:</label><br>
@@ -17,5 +59,6 @@
     <a href="{{ url_for('main.update_info') }}">Update Personal Info</a>
     </br>
     <a href="{{ url_for('main.travel_plans') }}">Travel Plams</a>
+>>>>>>> main
 </body>
 </html>

@@ -4,18 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VacaQuest - Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='rec.css') }}">
 </head>
 <body>
-    <h1>Your Vacation Recommendation</h1>
-    <p>{{ recommendation }}</p>
-
-    <form action="{{ url_for('main.save_plan') }}" method="post">
-        <input type="hidden" name="location" value="{{ location }}">
-        <input type="hidden" name="activities" value="{{ activities }}">
-        <input type="hidden" name="price" value="{{ price }}">
-        <button type="submit">Save Plan</button>
-    </form>
-    
-    <a href="/">Back to Home</a>
+    <div class="container">
+        <h1>Your Vacation Recommendation</h1>
+        <div class="recommendation-card">
+            <div class="plan-header">
+                <h2>{{ location }}</h2>
+            </div>
+            <div class="plan-details">
+                <p><strong>Activities:</strong></p>
+                <ul class="activities-list">
+                    {% for detail in activities.split('. ') if detail %}
+                    <li>{{ detail.strip() }}</li>
+                    {% endfor %}
+                </ul>
+                <p><strong>Estimated Price:</strong> {{ price }}</p>
+            </div>
+        </div>
+        <form action="{{ url_for('main.save_plan') }}" method="post">
+            <input type="hidden" name="location" value="{{ location }}">
+            <input type="hidden" name="activities" value="{{ activities }}">
+            <input type="hidden" name="price" value="{{ price }}">
+            <button type="submit" class="save-button">Save Plan</button>
+        </form>
+        <a href="{{ url_for('main.index') }}" class="back-button">Back to Home</a>
+    </div>
 </body>
 </html>
