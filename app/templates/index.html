@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
+<<<<<<< HEAD
     <div class="container">
         <div class="sidebar">
             <h2>VacaQuest</h2>
@@ -46,5 +47,18 @@
             </div>
         </div>
     </div>
+=======
+    <h1>Welcome to VacaQuest - Your Personal Vacation Guide!</h1>
+    <form action="{{ url_for('main.recommend') }}" method="post">
+        <label for="user_input">Tell us about your dream vacation:</label><br>
+        <textarea id="user_input" name="user_input" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Get Recommendations">
+    </form>
+    <a href="{{ url_for('main.logout') }}">Logout</a>
+    </br>
+    <a href="{{ url_for('main.update_info') }}">Update Personal Info</a>
+    </br>
+    <a href="{{ url_for('main.travel_plans') }}">Travel Plams</a>
+>>>>>>> main
 </body>
 </html>
