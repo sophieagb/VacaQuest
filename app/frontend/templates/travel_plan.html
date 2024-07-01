@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Travel Plans</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='travel.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Your Travel Plans</h1>
+        {% if plans %}
+        <ul class="plans-list">
+            {% for plan in plans %}
+            <li class="plan-item">
+                <div class="plan-header">
+                    <h2>{{ plan.destination }}</h2>
+                    <form action="{{ url_for('main.delete_plan') }}" method="POST" class="delete-form">
+                        <input type="hidden" name="destination" value="{{ plan.destination }}">
+                        <button class="delete-button" type="submit">Delete Plan</button>
+                    </form>
+                </div>
+                <div class="plan-details">
+                    <p><strong>Activities:</strong></p>
+                    <ul class="activities-list">
+                        {% for detail in plan.plan_details.split('.') if detail %}
+                        <li>{{ detail.strip() }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p><strong>Estimated Price:</strong> {{ plan.estimated_price }}</p>
+                    <p><strong>Date Created:</strong> {{ plan.created_at }}</p>
+                </div>
+                <div class="rating-section">
+                    <p>Rate this plan:</p>
+                    <div class="rate">
+                        <input type="radio" id="star5-{{ loop.index }}" name="rate-{{ loop.index }}" value="5" />
+                        <label for="star5-{{ loop.index }}" title="5 stars"></label>
+                        <input type="radio" id="star4-{{ loop.index }}" name="rate-{{ loop.index }}" value="4" />
+                        <label for="star4-{{ loop.index }}" title="4 stars"></label>
+                        <input type="radio" id="star3-{{ loop.index }}" name="rate-{{ loop.index }}" value="3" />
+                        <label for="star3-{{ loop.index }}" title="3 stars"></label>
+                        <input type="radio" id="star2-{{ loop.index }}" name="rate-{{ loop.index }}" value="2" />
+                        <label for="star2-{{ loop.index }}" title="2 stars"></label>
+                        <input type="radio" id="star1-{{ loop.index }}" name="rate-{{ loop.index }}" value="1" />
+                        <label for="star1-{{ loop.index }}" title="1 star"></label>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>You have no travel plans saved.</p>
+        {% endif %}
+        <a href="{{ url_for('main.index') }}" class="back-button">Back to Home</a>
+    </div>
+    <script src="{{ url_for('static', filename='rating.js') }}"></script>
+</body>
+</html>
