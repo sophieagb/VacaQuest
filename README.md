@@ -10,9 +10,34 @@ Sidebar Navigation: Access Dashboard, My Tickets, Favorites, Messages, Transacti
 
 #### Prerequisites
 Python 3.8+
+MySQL
 Flask
 Figma (for design reference)
 Installation
+
+### MySQL Setup
+
+1. **Install MySQL**: Download and install MySQL from the [official website](https://dev.mysql.com/downloads/installer/).
+
+2. **Create a Database and User**:
+
+   Open the MySQL command line:
+
+   ```sh
+   mysql -u root -p
+   CREATE DATABASE travel_app;
+   CREATE USER 'travel_admin'@'localhost' IDENTIFIED BY 'travel-pass123';
+   GRANT ALL PRIVILEGES ON travel_app.* TO 'travel_admin'@'localhost';
+   FLUSH PRIVILEGES;
+
+   Then create a .env file and paste the following:
+   
+    OPENAI_API_KEY='your-openai-api-key'
+  
+    MYSQL_HOST = 'localhost'
+    MYSQL_USER = 'travel_admin'
+    MYSQL_PASSWORD = 'travel-pass123'
+    MYSQL_DB = 'travel_app'
 
 #### Clone the repository:
 git clone https://github.com/yourusername/vacaquest.git
@@ -44,3 +69,11 @@ http://localhost:5000
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+
+
+
+
+    
+
+
