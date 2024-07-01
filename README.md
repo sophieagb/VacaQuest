@@ -8,38 +8,38 @@ Sidebar Navigation: Access Dashboard, My Tickets, Favorites, Messages, Transacti
 
 ## Getting Started
 
-### Prerequisites
+#### Prerequisites
 Python 3.8+
 Flask
 Figma (for design reference)
 Installation
 
-### Clone the repository:
+#### Clone the repository:
 git clone https://github.com/yourusername/vacaquest.git
 
 
-### Navigate to the project directory:
+#### Navigate to the project directory:
 cd vacaquest
 
 
-### Create and activate a virtual environment:
+#### Create and activate a virtual environment:
 python3 -m venv venv
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 
-### Install dependencies:
+#### Install dependencies:
 pip install -r requirements.txt
 
 
-### Running the Application
+#### Running the Application
 Set the FLASK_APP environment variable:
 export FLASK_APP=app.py  # On Windows use `set FLASK_APP=app.py`
 
 
-### Run the development server:
+#### Run the development server:
 flask run or python3 run.py
 
-### Open your browser and visit:
+#### Open your browser and visit:
 http://localhost:5000
 
 ## License
