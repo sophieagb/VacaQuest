@@ -59,10 +59,14 @@ pip install -r requirements.txt
 
 ### Running the Application
 #### Set the FLASK_APP environment variable:
-##### export FLASK_APP=app.backend:create_app   
+##### `export FLASK_APP=app.backend:create_app`  
 ##### ensure you have your OpenAI API key set in your .env file: OPENAI_API_KEY='your-openai-api-key'
 ##### On Windows use `set FLASK_APP=app.backend:create_app`
 
+#### Ensure MySQL is running:
+##### `sudo /usr/local/mysql/support-files/mysql.server start` on MacOS
+
+##### `net start MySQL` on Windows
 
 #### Run the development server:
 flask run
