@@ -201,60 +201,6 @@ def save_plan():
     return redirect(url_for("main.travel_plans"))
 
 
-<<<<<<< HEAD
-@main_bp.route("/rate_plan", methods=["POST"])
-def rate_plan():
-=======
-@main_bp.route("/delete_plan", methods=["POST"])
-def delete_plan():
-    if "logged_in" not in session:
-        return redirect(url_for("main.login"))
-    
-    user_id = session.get("user_id")
-    destination = request.form["destination"]
-
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM travel_plans WHERE user_id = %s AND destination = %s", 
-            (user_id, destination)
-        )
-        conn.commit()
-        cur.close()
-        conn.close()
-        flash("Travel plan deleted successfully!", "success")
-    except Exception as e:
-        flash(f"Error: {e}", "danger")
-        print(f"Error: {e}")
-
-    return redirect(url_for("main.travel_plans"))
-
-
-@main_bp.route("/update_info", methods=["GET", "POST"])
-def update_info():
->>>>>>> main
-    if "logged_in" not in session:
-        return redirect(url_for("main.login"))
-
-    user_id = session.get("user_id")
-    destination = request.form["destination"]
-    rating = request.form["rating"]
-
-    try:
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            "UPDATE travel_plans SET rating = %s WHERE user_id = %s AND destination = %s",
-            (rating, user_id, destination)
-        )
-        conn.commit()
-        cur.close()
-        conn.close()
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
 @main_bp.route("/delete_plan", methods=["POST"])
 def delete_plan():
     if "logged_in" not in session:
