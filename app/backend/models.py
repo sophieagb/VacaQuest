@@ -1,3 +1,6 @@
+from .utils import get_db_connection
+
+
 def create_tables():
     conn = get_db_connection()
     cursor = conn.cursor()
