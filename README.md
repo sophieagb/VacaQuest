@@ -39,26 +39,26 @@ Installation
     MYSQL_PASSWORD = 'travel-pass123'
     MYSQL_DB = 'travel_app'
 
-#### Clone the repository:
+### Clone the repository:
 git clone https://github.com/yourusername/vacaquest.git
 
 
-#### Navigate to the project directory:
+### Navigate to the project directory:
 cd vacaquest
 
 
-#### Create and activate a virtual environment:
+### Create and activate a virtual environment:
 python3 -m venv venv
 Then
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 
-#### Install dependencies:
+### Install dependencies:
 pip install -r requirements.txt
 
 
-#### Running the Application
-Set the FLASK_APP environment variable:
+### Running the Application
+#### Set the FLASK_APP environment variable:
 ##### export FLASK_APP=app.backend:create_app   
 ##### ensure you have your OpenAI API key set in your .env file: OPENAI_API_KEY='your-openai-api-key'
 ##### On Windows use `set FLASK_APP=app.backend:create_app`
