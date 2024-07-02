@@ -59,11 +59,11 @@ pip install -r requirements.txt
 
 #### Running the Application
 Set the FLASK_APP environment variable:
-export FLASK_APP=app.py  # On Windows use `set FLASK_APP=app.py`
+export FLASK_APP=app.backend:create_app   # On Windows use `set FLASK_APP=app.backend:create_app`
 
 
 #### Run the development server:
-flask run or python3 main.py
+flask run
 
 #### Open your browser and visit:
 http://localhost:5000
