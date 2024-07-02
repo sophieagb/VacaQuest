@@ -49,6 +49,7 @@ cd vacaquest
 
 #### Create and activate a virtual environment:
 python3 -m venv venv
+Then
 source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 
@@ -62,7 +63,7 @@ export FLASK_APP=app.py  # On Windows use `set FLASK_APP=app.py`
 
 
 #### Run the development server:
-flask run or python3 run.py
+flask run or python3 main.py
 
 #### Open your browser and visit:
 http://localhost:5000

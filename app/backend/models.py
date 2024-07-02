@@ -3,6 +3,7 @@ from .utils import get_db_connection
 
 def create_tables():
     conn = get_db_connection()
+    print("Success")
     cursor = conn.cursor()
 
     # Create users table

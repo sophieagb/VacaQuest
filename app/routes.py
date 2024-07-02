@@ -199,7 +199,7 @@ def save_plan():
         flash(f"Error: {e}", "danger")
         print(f"Error: {e}")
 
-    return redirect(url_for("main.travel_plans"))
+    return redirect(url_for("main.travel_plan"))
 
 
 @main_bp.route("/delete_plan", methods=["POST"])
