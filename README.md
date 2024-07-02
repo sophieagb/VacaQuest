@@ -59,8 +59,8 @@ pip install -r requirements.txt
 
 #### Running the Application
 Set the FLASK_APP environment variable:
-### export FLASK_APP=app.backend:create_app   
-# On Windows use `set FLASK_APP=app.backend:create_app`
+##### export FLASK_APP=app.backend:create_app   
+##### On Windows use `set FLASK_APP=app.backend:create_app`
 
 
 #### Run the development server:
