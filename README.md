@@ -40,7 +40,7 @@ Installation
     MYSQL_DB = 'travel_app'
 
 ### Clone the repository:
-git clone https://github.com/yourusername/vacaquest.git
+git clone https://github.com/sophieagb/vacaquest.git
 
 
 ### Navigate to the project directory:
